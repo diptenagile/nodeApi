@@ -12,19 +12,21 @@ module.exports = (function () {
 
 	var api = express.Router();
 
-	api.get('/getData', function (reqs, res) {
+	api.get('/getData', function (reqs, res, next) {
 
 		if(reqs.query.parent && reqs.query.cat_id){
 
 			console.log(reqs.query);
 			db.getRecords('SELECT * FROM category WHERE parent = ? AND category_id = ?', [reqs.query.parent, reqs.query.cat_id], function (status, data){
 
+				
 				if(status === false){
 					console.log(data);
 
 					res.send(data);
 				}
 
+				next(new Error('failed to load user'));
 			});
 		}else {
 			res.status(400);

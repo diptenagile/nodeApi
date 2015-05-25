@@ -1,5 +1,7 @@
 var express = require('express');
 var app = express();
+var admin = express();
+
 var mysql = require('mysql');
 
 var bodyParser = require('body-parser');
@@ -13,10 +15,14 @@ var api = require('./api/crud_api');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
-
+app.set('title', 'Hello.....');
 app.use('/api',api);
 
-app.use('/public', express.static(__dirname + '/public'));
+// app.use(express.logger());
+app.use('/public', express.static(__dirname + '/public/app'));
+
+
+app.use('/admin', admin);
 // api.locals = app.locals;
 
 // app.locals.title = "my app";
@@ -35,8 +41,10 @@ process.on('uncaughtException', function (err) {
 // 	}
 // });	
 
-app.get('/', function (req, res) {
-	res.send("Good morning...");
+admin.get('/', function (req, res) {
+
+	console.log(admin.mountpath);
+	res.send("Gm");
 	// pool.getConnection(function(err, connection) {
 		
 	// 	if(err){
@@ -56,6 +64,10 @@ app.get('/', function (req, res) {
 });
 
 
+app.get('*', function (req, res) {
+        res.sendfile('./public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
+});
+// 
 
 var server = app.listen('5000', function(){
 
