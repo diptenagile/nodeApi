@@ -9,6 +9,16 @@ var bodyParser = require('body-parser');
 var api = require('./api/crud_api');
 // api(app);
 
+// Allow cross origin request
+var allowCrossDomain = function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+
+    next();
+}
+
+app.use(allowCrossDomain);
 
 // var connection = mysql.createConnection({
 // });
@@ -19,8 +29,7 @@ app.set('title', 'Hello.....');
 app.use('/api',api);
 
 // app.use(express.logger());
-app.use('/public', express.static(__dirname + '/public/app'));
-
+app.use('/', express.static(__dirname + '/public/app'));
 
 app.use('/admin', admin);
 // api.locals = app.locals;
@@ -65,7 +74,7 @@ admin.get('/', function (req, res) {
 
 
 app.get('*', function (req, res) {
-        res.sendfile('./public/index.html'); // load the single view file (angular will handle the page changes on the front-end)
+        res.redirect('/'); // load the single view file (angular will handle the page changes on the front-end)
 });
 // 
 

@@ -12,7 +12,7 @@ var pool = mysql.createPool({
 
 
 exports.getRecords = function(sqlQuery, params, callback) {
-  // var sql = "SELECT name FROM users WHERE city=?";
+
   // get a connection from the pool
   pool.getConnection(function(err, connection) {
     if(err) { console.log(err); callback(true); return; }
